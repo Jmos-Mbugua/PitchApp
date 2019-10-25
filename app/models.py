@@ -121,22 +121,25 @@ class Downvote(db.Model):
     def __repr__(self):
         return f"{self.user_id}:{self.pitch_id}"
 
-class Downvote(db.Model):
-    __tablename__ = 'downvotes'
 
-    id =  db.Column(db.Integer,primary_key=True)
+  
+    
+    
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer,primary_key=True)
+    comment = db.Column(db.Text(),nullable = False)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
-    
 
-    def save(self):
+    def save_comments(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def get_downvotes(cls,id):
-        downvotes = Downvote.query.filter_by(pitch_id = id).all()
-        return downvotes
+    def get_comments(cls,pitch_id):
+        comments = Comment.query.filter_by(pitch_id=pitch_id).all()
 
     def __repr__(self):
-        return f"{self.user_id}:{self.pitch_id}"
+        return f"comment:{self.comment}"
