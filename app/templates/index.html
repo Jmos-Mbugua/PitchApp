@@ -1,34 +1,37 @@
-{% extends "base.html" %}
-{% import bootstrap/wtf.html as wtf %}
-{% block content %}
-    <div class="bg-light text-center">
-        <h1>PitchApp</h1>
-    </div>
-    <div>
-            {% if current_user.can(Permission.WRITE_ARTICLES) %}
-            {{ wtf.quick_form(form) }}
-            {% endif %}
-            
-    </div>
-    <ul class="posts">
-            {% for post in posts %}
-            <li class="post">
-            <div class="profile-thumbnail">
-            <a href="{{ url_for('.user', username=post.author.username) }}">
-            <img class="img-rounded profile-thumbnail"
-            src="{{ post.author.gravatar(size=40) }}">
-            </a>
-            </div>
-            <div class="post-date">{{ moment(post.timestamp).fromNow() }}</div>
-            <div class="post-author">
-            <a href="{{ url_for('.user', username=post.author.username) }}">
-            {{ post.author.username }}
-            </a>
-            </div>
-            <div class="post-body">{{ post.body }}</div>
-            </li>
-            {% endfor %}
-            </ul>
-     
+{% extends 'base.html'%}
+{% import 'macro.html' as macro %}
 
-{% endblock content %}
+{% block content%}
+<div class="container">
+  <ul class="nav nav-pills nav-justified nav-fill" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active text-light" id="homCards" data-toggle="tab" href="#all"><strong>All Pitches</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" id="homCards" data-toggle="tab" href="#interview">Interview Pitches</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" id="homCards" data-toggle="tab" href="#business">Business Pitches</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" id="homCards" data-toggle="tab" href="#product">Product Pitches</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="container tap-pan active" id="all">
+      {{ macro.displayContent(pitches) }}
+    </div>
+    <div class="container tap-pan active" id="business">
+      {{ macro.displayContent(interview) }}
+    </div>
+
+    <div class="container tap-pan active" id="product">
+      {{ macro.displayContent(product) }}
+    </div>
+    <div class="container tap-pan active" id="interview">
+      {{ macro.displayContent(interview) }}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
